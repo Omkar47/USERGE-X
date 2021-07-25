@@ -94,7 +94,7 @@ if userge.has_bot:
                     _BOT_PM_MEDIA = bot_m_fid
 
     async def get_bot_info():
-        """ Caching Owner and bot info """
+        """Caching Owner and bot info"""
         global _CACHED_INFO
         t_now = datetime.now()
         if not (
@@ -139,7 +139,7 @@ if userge.has_bot:
 
     async def check_new_bot_user(user: Union[int, str, User]) -> bool:
         user_ = await userge.bot.get_user_dict(user, attr_dict=True)
-        if user_.id in Config.OWNER_ID or user_.id in Config.SUDO_USERS:
+        if user_.id in Config.OWNER_ID:
             found = True
         else:
             found = await BOT_START.find_one({"user_id": user_.id})
@@ -208,8 +208,7 @@ My Master is : {owner_.flname}</b>
             await CHANNEL.log(
                 f"**ERROR**: {str(bpm_e)}\n\nFatal Error occured while sending Bot Pm Media"
             )
-        if from_user.id not in Config.OWNER_ID:
-            await check_new_bot_user(message.from_user)
+        await check_new_bot_user(message.from_user)
 
     @userge.bot.on_callback_query(filters.regex(pattern=r"^add_to_grp$"))
     @check_owner
@@ -433,7 +432,7 @@ async def bot_users_(message: Message):
     allow_channels=False,
 )
 async def bot_antiflood_(message: Message):
-    """ enable / disable Bot Antiflood """
+    """enable / disable Bot Antiflood"""
     if Config.BOT_ANTIFLOOD:
         Config.BOT_ANTIFLOOD = False
         await message.edit("`Bot Antiflood disabled !`", del_in=3)

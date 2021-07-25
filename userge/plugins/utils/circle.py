@@ -22,7 +22,7 @@ LOG = userge.getLogger(__name__)
     },
 )
 async def video_note(message: Message):
-    """ Covert to video note """
+    """Covert to video note"""
     _cache_path = "userge/xcache/circle"
     _vid_path = _cache_path + "/temp_vid.mp4"
     reply = message.reply_to_message
@@ -78,14 +78,14 @@ async def crop_vid(input_vid: str, final_path: str):
     for stream in out["media"].get("track"):
         if stream["@type"] == "Video":
             vid_valid = True
-            height_ = stream.get("Height")
-            width_ = stream.get("Width")
+            height_ = int(stream.get("Height", 0))
+            width_ = int(stream.get("Width", 0))
             aspect_ratio_ = stream.get("DisplayAspectRatio")
             if aspect_ratio_:
                 if aspect_ratio_ == "1":
                     correct_aspect = False
             elif width_ and height_:
-                if width_ == height_:
+                if width_ == height_ != 0:
                     correct_aspect = False
             else:
                 return
